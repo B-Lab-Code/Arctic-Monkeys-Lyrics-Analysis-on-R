@@ -1,0 +1,239 @@
+# Arctic-Monkeys-Lyrics-Analysis-on-R
+
+
+
+## ¿Que hará este blog? 
+
+Arctic Monkeys es una de las bandas más importantes e icónicas del rock alternativo actual. La primera vez que uno escucha esa batería lenta y pesada sonando con un leve eco al fondo, interrumpida por un ya icónico riff de guitarra que muestra el carácter oscuro y seductor de lo que será ***Do I Wanna Know***, te das cuenta de que ese ritmo se quedará con uno por siempre. 
+
+Sin embargo, hay más canciones que *Do I Wanna Know* y álbumes qué *AM*. Los temas que trata la banda pueden variar según la canción y álbum, por lo que puede ser interesante observar de forma más global que quiere contar cada obra de los *cuatro de Sheffiel*. 
+
+Tomando en cuenta lo anterior, en este blog se quiere mostrar cómo se puede analizar, en un lenguaje de programación como R, la obra musical de la banda. En este caso, más que un ensayo sobre los simbolismos de cada canción se mostrarán los datos “macro” de cada álbum y canción. Se revisará las letras y mostrará si existen patrones según álbum. 
+
+Para esto se usó el dataset llamado *Arctic Monkeys Lyrics*, subido por el usuario GGAPP1 a Kaggle, disponible en el siguiente enlace: 
+
+<p align="center">`https://www.kaggle.com/datasets/ggapp1/arctic-monkeys-lyrics`</p>
+
+La última actualización de esta dataset fue antes de la publicación del álbum *The Car* de 2022, ya que este no está incluido. Por esto, se revisarán las canciones hasta el álbum *Tranquility Base Hotel & Casino*. 
+
+A continuación podrán ver como llevar a cabo el proyecto.
+
+
+<p align="center">↓↓↓ Sigan hacia abajo ↓↓↓</p>
+
+
+
+```text
+
+                                                          .;X&&&&&&&&&&X+.                                
+                                                   .:x&&&&&&&&&&&&&&&&&&&&&&&&x:.                         
+                                                .X&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&X.                      
+                                            ..$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$:.                  
+                                          .;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&+.                
+                                        .+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x.              
+                                       ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&;             
+                                      &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&.           
+                                    :&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&;          
+                                   +&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x         
+                                 .x&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x.       
+                                 +&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&XxX&&&x:...+&&&&&&&x       
+                                ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x...&:.    x+  x&x.     ;&&&&&&&&;      
+                               .&&&&&&&&&&&&&&&&&&&&&&&&$X;..X&&:     &.   .:x;  XX   .X&&x&&&&&&&&&.     
+                               X&&&&&&&&&&&&&&&&&&&X&&$. ..   &.  ;&&&&&+  +&&.  &:   $&&&&&&&&&&&&&X     
+                              .&&&&&&&&&&&&&&&&&.  .&&+  x&. .+  .&&&&&&;  x&&. .&;   .$&&&&&&&&&&&&&.    
+                              +&&&&&&&&&&&&&&&&: ; .$&:  .  :&;  .$&&+&&:  $&&. ;&&.      ;&&&&&&&&&&+    
+                              $&&&&&&&&&&&&&&&. +$  :&. ..  .&&.     .&&. .&&X  x&&&$.   .+&&&&&&&&&&&.   
+                              &&&&&&&&&&&&&&&.      .&. .&.  .&&+.  ..&&;+x&&&&&&$$&&$$$&&$X$&&&&&&&&&.   
+                              &&&&&&&&&&&&&$. .$&$  .x  :&&&&&&XX$$x+&&::+$    +$. ;$  ;+.   .&&&&&&&&.   
+                              &&&&&&&&&&&&&&&&&&&&&Xx&&&&.  X&&. x; .&. +&X .X$&&+ .. .$  ;&&$&&&&&&&&.   
+                              &&&&&&&&&$..&&: x&X.    .&$   .&+ .$. .. X&&+ ...&&&.  .&&.   :&&&&&&&&&.   
+                              $&&&&&&&&:  ;.  xx  X&&  xx    ;. +x    :&&&. ...&&&+ .&&&&+.   &&&&&&&&.   
+                              +&&&&&&&x .. .. x: :&&X  $: :$    X; .x  +&$  .+++&&; .&&&.+x. .&&&&&&&+    
+                              .&&&&&&&. $;.$; +x  ..  x&. ;&x   $: .&.  X$     +&&: .&&;    .&&&&&&&&.    
+                               X&&&&&;:;&&&&;:x&&;::X&&&:;X&&xxX&$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&X     
+                               .&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&.     
+                                ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&;      
+                                 x&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x       
+                                 .x&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x.       
+                                   +&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x         
+                                    :&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&;          
+                                      &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&.           
+                                       ;&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&+             
+                                        .x&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&x.              
+                                          .+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&+.                
+                                            ..$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$:.                  
+                                                .$&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&$.                      
+                                                   .:x&&&&&&&&&&&&&&&&&&&&&&&&x;.                         
+                                                        ...+X&&&&&&&&&&X+:..                              
+
+```
+
+### Aclaraciones preliminares
+
+La base de datos es bastante simple. Es un archivo .csv que solo tiene tres variables (o columnas) que son:  
+
+- `name`
+
+- `album`
+
+- `lyrics`
+
+Si bien, no son tantas, dentro de `album` hay cosas que podrían generar “ruido” en el análisis posterior ya que aparecen singles, EPs como *Beneath The Boardwalk*, versiones de radio, etc) 
+
+Tomando en cuenta lo anterior, comencemos:
+
+
+# Los datos
+
+```{r}
+library(tidyverse)
+library(tidytext)
+```
+
+## 
+
+
+
+```{r}
+# ==============================================================================
+
+# 2. Definición de álbumes oficiales
+albumes_oficiales <- c(
+  "Whatever People Say I Am, That’s What I’m Not",
+  "Favourite Worst Nightmare",
+  "Humbug",
+  "Suck It and See",
+  "AM",
+  "Tranquility Base Hotel & Casino"
+  )
+
+# ==============================================================================
+
+# 3. Carga de datos
+
+mis_datos <- read_csv("Bases de datos/lyrics.csv")
+
+# ==============================================================================
+
+# 4. Limpieza y Tokenización
+
+tidy_lyrics <- mis_datos |>
+  mutate(
+    
+    # Quitar corchetes como [Chorus] y saltos de línea
+    
+    lyrics = str_remove_all(lyrics, "\\[.*?\\]"),
+    lyrics = str_replace_all(lyrics, "\\n", " ")
+  ) |>
+  
+  # Filtrar solo los álbumes oficiales
+  filter(album %in% albumes_oficiales) |>
+  
+  # Asegurar el orden cronológico
+  mutate(album = factor(album, levels = albumes_oficiales)) |>
+  
+  # Romper en palabras
+  unnest_tokens(word, lyrics) |>
+  
+  # Quitar palabras vacías
+  anti_join(stop_words)
+
+# ==============================================================================
+
+# 5. Generación del Gráfico
+# (Calculamos el top 10 y graficamos directamente aquí para simplificar)
+tidy_lyrics |>
+  group_by(album) |>
+  count(word, sort = TRUE) |>
+  slice_max(n, n = 10) |>
+  ungroup() |>
+  mutate(word = reorder_within(word, n, album)) |>
+  
+  # Pasamos los datos a ggplot
+  ggplot(aes(n, word, fill = album)) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~album, scales = "free_y") +
+  scale_y_reordered() +
+  labs(title = "Evolución Temática de Arctic Monkeys",
+       subtitle = "Palabras más frecuentes por álbum",
+       x = NULL, y = NULL
+       ) +
+  theme_minimal() +
+  theme(strip.text = element_text(face = "bold"))
+
+# ==============================================================================
+```
+
+Aparte de contar las palabras más frecuentes de cada álbum (y darnos cuenta de que en varias se repiten la misma cantidad de veces), podemos observar la “carga emocional”.  Para esto contamos con el léxico “bing”, que clasifica términos como positivos o negativos, y calculamos un "Puntaje de Sentimiento" (Positivos - Negativos). 
+
+```{r}
+# ==============================================================================
+
+## Análisis de Sentimiento: ¿Alegría o Melancolía?
+
+Además de las palabras frecuentes, analizamos la "carga emocional" de cada álbum. Para esto, cruzamos las letras con el léxico `bing`, que clasifica términos como positivos o negativos, y calculamos un "Puntaje de Sentimiento" (Positivos - Negativos).
+
+```{r sentimiento, fig.width=10, fig.height=6, message=FALSE, warning=FALSE, echo=FALSE}
+# Análisis de Sentimiento usando el pipe nativo |>
+
+arctic_sentiment <- tidy_lyrics |>
+  
+  # Unimos con el diccionario de sentimientos "bing"
+  inner_join(get_sentiments("bing"), by = "word") |>
+  
+  # Contamos cuántas palabras positivas y negativas hay por álbum
+  count(album, sentiment) |>
+  
+  # Reestructuramos la tabla para tener columnas 'positive' y 'negative'
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) |>
+  
+  # Calculamos el sentimiento neto
+  mutate(
+    sentiment_score = positive - negative,
+    # Creamos una etiqueta para el color (Positivo o Negativo)
+    tipo = ifelse(sentiment_score > 0, 
+                  "Positivo", 
+                  "Negativo"
+                  )
+  )
+
+# ==============================================================================
+
+# Visualización
+
+ggplot(arctic_sentiment, aes(x = album, y = sentiment_score, fill = tipo)) +
+  geom_col() +
+  coord_flip() + # Giramos el gráfico para leer mejor los álbumes
+  labs(title = "Evolución Emocional de Arctic Monkeys",
+       subtitle = "Sentimiento Neto (Palabras Positivas - Negativas)",
+       x = NULL,
+       y = "Puntaje de Sentimiento",
+       fill = "Carga Emocional"
+       ) +
+  scale_fill_manual(values = c("Negativo" = "#B22222", "Positivo" = "#2E8B57")) + # Rojo y Verde sobrios
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold")
+  )
+
+# ==============================================================================
+```
+
+Como podemos ver, en base al léxico “bing”, tiende a considerar como "más negativa" la mayoría de la obra de Arctic Monkeys, si al menos consideramos las 10 palabras más frecuentes de cada álbum. ¿Que se puede sacar de esto? 
+ 
+
+***Humbug*** 
+
+Si hay uno que llama la atención, esa es Humbug por ser el “más negativa” de los 6 álbumes y hay ay varios factores que lo pueden explicar. Fue producido por Josh Homme (**Queens of the Stone Age**) y las letras son crípticas y algo siniestras (**Crying Lightning**, **My Propeller**). En todo caso, puede que haya influido que **Humbug** haya tenido más de 10 canciones en su “top 10”. 
+
+
+***AM*** 
+
+Probablemente, el álbum por el que muchos conocieron Arctic Monkeys, por el que muchos lo recuerdan, en el que uno piensa cuando piensa en Arctic Monkeys, con una de las portadas más simples, elegantes e icónicas, es según el léxico “bing” un álbum “negativo”. No hay que sorprenderse en todo caso, al ser un álbum con letras que hablan sobre celos, alcohol y llamadas de madrugada. El léxico “bing” entender varios términos como positivos o negativos, y tomará eso en consideración. Así que –10 puntos para el léxico “bing” por atreverse a ver como “más negativa” otra obra maestra de la humanidad.
+ 
+
+***Suck It and See*** vs ***Tranquility Base*** 
+
+Llama la atención que al tener un estilo más “veraniego” (y en consecuencia, palabras más dulces) sea considerado como “más negativo”, mientras que **Tranquility Base** tiene un lenguaje que se puede considerar más técnico, lo que puede hacer que el algoritmo lo marqué como “neutral” o incluso tendiendo a positivo por ciertas palabras como **star**, **fun** o **easy**. 
+
