@@ -65,7 +65,7 @@ A continuación podrán ver como llevar a cabo el proyecto.
                                                         ...+X&&&&&&&&&&X+:..                              
 ```
 
-## ¿Q? 
+
 
 La base de datos es bastante simple. Es un archivo .csv que solo tiene tres variables (o columnas) que son:  
 - ` name `
